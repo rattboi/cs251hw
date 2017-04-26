@@ -16,22 +16,18 @@ def check_clause(clause, case):
 
 
 def check_var(var, case):
-    (a, b, c) = case
-    if var == "a" and a is True:
-        return True
-    if var == "!a" and a is False:
-        return True
-    if var == "b" and b is True:
-        return True
-    if var == "!b" and b is False:
-        return True
-    if var == "c" and c is True:
-        return True
-    if var == "!c" and c is False:
-        return True
-    if var == "T":
-        return True
-    return False
+    (a_case, b_case, c_case) = case
+    var_lookup = {"a": True, "!a": False,
+                  "b": True, "!b": False,
+                  "c": True, "!c": False,
+                  "T": True}
+
+    case_lookup = {"a": a_case, "!a": a_case,
+                   "b": b_case, "!b": b_case,
+                   "c": c_case, "!c": c_case,
+                   "T": True}
+
+    return (var_lookup[var] == case_lookup[var])
 
 
 def main():
@@ -53,6 +49,10 @@ def main():
 
     # a \/ b \/ c
     test([["a", "b", "c"]],                                      True)
+
+
+    test([["a", "b", "c"], ["a", "b", "!c"], ["a", "!b", "c"], ["a", "!b", "!c"], ["!a", "b", "c"], ["!a", "b", "!c"], ["!a", "!b", "c"], ["!a", "!b", "!c"], ["a", "b", "c"], ["a", "b", "!c"], ["a", "!b", "c"], ["a", "!b", "!c"], ["!a", "b", "c"], ["!a", "b", "!c"], ["!a", "!b", "c"], ["!a", "!b", "!c"]], False)
+
 
 def test(cnf, answer):
     print("%s %s is %s" %                                        \
