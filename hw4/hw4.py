@@ -1,5 +1,6 @@
 #!/usr/bin/env python3.6
 
+from typing import List, Tuple
 
 class Expr:
     """
@@ -166,6 +167,11 @@ class Exists(Expr):
         return Exists(z if self.var == x else self.var, self.body.rename(x, z))
 
 
+def print_forms(forms: List[Tuple[Expr, Tuple[str, str]]]) -> None:
+    for (probNum, (form, (origVar, renameVar))) in enumerate(forms):
+        print(f'{probNum + 1}. {form} [{origVar} ↦ {renameVar}] = {form.rename(origVar, renameVar)}')
+
+
 def main():
     """
     Main and tests
@@ -183,8 +189,7 @@ def main():
              (form4, ("y", "z")),
              (form5, ("x", "y")),
              (form6, ("y", "q"))]
-    for (probNum, (form, (origVar, renameVar))) in enumerate(forms):
-        print(f'{probNum + 1}. {form} [{origVar} ↦ {renameVar}] = {form.rename(origVar, renameVar)}')
+    print_forms(forms)
 
 
 if __name__ == '__main__':
