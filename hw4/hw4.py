@@ -191,8 +191,7 @@ def main():
              (form4, ("y", "z")),
              (form5, ("x", "y")),
              (form6, ("y", "q"))]
-    for t in enumerate(forms):
-        (probNum, (form, (origVar, renameVar))) = t
+    for (probNum, (form, (origVar, renameVar))) in enumerate(forms):
         print("{}. {} [{} |-> {}] = {}".format(probNum + 1,
                                                form,
                                                origVar,
