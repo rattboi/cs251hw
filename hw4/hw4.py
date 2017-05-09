@@ -3,7 +3,7 @@
 ######################################
 # Expr
 #  methods
-#    __str__ : Expr -> String
+#    __str__  : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
@@ -20,7 +20,7 @@ class Expr:
 #  fields
 #    name : String
 #  methods
-#    __str__ : Expr -> String
+#    __str__  : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
@@ -40,7 +40,7 @@ class Var(Expr):
 #  fields
 #    body : Expr
 #  methods 
-#    __str__ : Expr -> String
+#    __str__  : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
@@ -61,7 +61,7 @@ class Not(Expr):
 #    left  : Expr
 #    right : Expr
 #  methods
-#    __str__ : Expr -> String
+#    __str__  : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
@@ -83,7 +83,7 @@ class And(Expr):
 #    left  : Expr
 #    right : Expr
 #  methods 
-#    __str__ : Expr -> String
+#    __str__  : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
@@ -105,7 +105,7 @@ class Or(Expr):
 #    left  : Expr
 #    right : Expr
 #  methods 
-#    __str__ : Expr -> String
+#    __str__  : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
@@ -127,7 +127,7 @@ class Arrow(Expr):
 #    var  : String
 #    body : Expr
 #  methods
-#    __str__ : Expr -> String
+#    __str__  : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
@@ -149,7 +149,7 @@ class Forall(Expr):
 #    var : String
 #    body : Expr
 #  methods
-#    __str__ : Expr -> String
+#    __str__  : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
