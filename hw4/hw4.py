@@ -9,7 +9,7 @@ class Expr:
        rename   : Expr -> Expr
     """
 
-    def __str__():
+    def __str__() -> str:
         pass
 
     def rename():
@@ -26,13 +26,13 @@ class Var(Expr):
        rename   : Expr -> Expr
     """
 
-    def __init__(self, n):
+    def __init__(self, n) -> None:
         self.name = n
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-    def rename(self, x, z):
+    def rename(self, x: str, z: str) -> Expr:
         return Var(z if self.name == x else self.name)
 
 
@@ -46,13 +46,13 @@ class Not(Expr):
        rename   : Expr -> Expr
     """
 
-    def __init__(self, b):
+    def __init__(self, b: Expr) -> None:
         self.body = b
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'¬({self.body})'
 
-    def rename(self, x, z):
+    def rename(self, x: str, z: str) -> Expr:
         return Not(self.body.rename(x, z))
 
 
@@ -67,14 +67,14 @@ class And(Expr):
        rename   : Expr -> Expr
     """
 
-    def __init__(self, l, r):
+    def __init__(self, l: Expr, r: Expr) -> None:
         self.left = l
         self.right = r
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'({self.left}) ∧ ({self.right})'
 
-    def rename(self, x, z):
+    def rename(self, x: str, z: str) -> Expr:
         return And(self.left.rename(x, z), self.right.rename(x, z))
 
 
@@ -89,14 +89,14 @@ class Or(Expr):
        rename   : Expr -> Expr
     """
 
-    def __init__(self, l, r):
+    def __init__(self, l: Expr, r: Expr) -> None:
         self.left = l
         self.right = r
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'({self.left}) ∨ ({self.right})'
 
-    def rename(self, x, z):
+    def rename(self, x: str, z: str) -> Expr:
         return Or(self.left.rename(x, z), self.right.rename(x, z))
 
 
@@ -111,14 +111,14 @@ class Arrow(Expr):
        rename   : Expr -> Expr
     """
 
-    def __init__(self, l, r):
+    def __init__(self, l: Expr, r: Expr) -> None:
         self.left = l
         self.right = r
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'({self.left}) → ({self.right})'
 
-    def rename(self, x, z):
+    def rename(self, x: str, z: str) -> Expr:
         return Arrow(self.left.rename(x, z), self.right.rename(x, z))
 
 
@@ -133,14 +133,14 @@ class Forall(Expr):
        rename   : Expr -> Expr
     """
 
-    def __init__(self, v, b):
+    def __init__(self, v: Expr, b: Expr) -> None:
         self.var = v
         self.body = b
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'∀{self.var}.({self.body})'
 
-    def rename(self, x, z):
+    def rename(self, x: str, z: str) -> Expr:
         return Forall(z if self.var == x else self.var, self.body.rename(x, z))
 
 
@@ -155,14 +155,14 @@ class Exists(Expr):
        rename   : Expr -> Expr
     """
 
-    def __init__(self, v, b):
+    def __init__(self, v, b) -> None:
         self.var = v
         self.body = b
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'∃{self.var}.({self.body})'
 
-    def rename(self, x, z):
+    def rename(self, x: str, z: str) -> Expr:
         return Exists(z if self.var == x else self.var, self.body.rename(x, z))
 
 
