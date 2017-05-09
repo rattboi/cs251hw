@@ -9,10 +9,10 @@ class Expr:
        rename   : Expr -> Expr
     """
 
-    def __str__() -> str:
+    def __str__(self) -> str:
         pass
 
-    def rename():
+    def rename(self, x: str, z: str) -> 'Expr':
         raise NotImplementedError
 
 
@@ -133,7 +133,7 @@ class Forall(Expr):
        rename   : Expr -> Expr
     """
 
-    def __init__(self, v: Expr, b: Expr) -> None:
+    def __init__(self, v: str, b: Expr) -> None:
         self.var = v
         self.body = b
 
@@ -155,7 +155,7 @@ class Exists(Expr):
        rename   : Expr -> Expr
     """
 
-    def __init__(self, v, b) -> None:
+    def __init__(self, v: str, b: Expr) -> None:
         self.var = v
         self.body = b
 
