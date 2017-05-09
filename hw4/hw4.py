@@ -3,13 +3,13 @@ from __future__ import print_function
 ######################################
 # Expr
 #  methods
-#    toString : Expr -> String
+#    __str__ : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
 class Expr:
 
-    def toString():
+    def __str__():
         pass
 
     def rename():
@@ -17,10 +17,10 @@ class Expr:
 
 ######################################
 # Var <: Expr
-#  fields 
+#  fields
 #    name : String
-#  methods 
-#    toString : Expr -> String
+#  methods
+#    __str__ : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
@@ -29,20 +29,21 @@ class Var(Expr):
     def __init__(self, n):
         self.name = n
 
-    def toString(self):
+    def __str__(self):
         return self.name
 
     def rename(self, x, z):
         if self.name == x:
-            self.name = z
-        return self
+            return Var(z)
+        else:
+            return Var(self.name)
 
 ######################################
 # Not <: Expr
 #  fields
 #    body : Expr
 #  methods 
-#    toString : Expr -> String
+#    __str__ : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
@@ -51,12 +52,11 @@ class Not(Expr):
     def __init__(self, b):
         self.body = b
 
-    def toString(self):
-        return "! (" + self.body.toString() + ")"
+    def __str__(self):
+        return "! ({})".format(self.body)
 
     def rename(self, x, z):
-        self.body.rename(x, z)
-        return self
+        return Not(self.body.rename(x, z))
 
 ######################################
 # And <: Expr
@@ -64,7 +64,7 @@ class Not(Expr):
 #    left  : Expr
 #    right : Expr
 #  methods
-#    toString : Expr -> String
+#    __str__ : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
@@ -74,13 +74,11 @@ class And(Expr):
         self.left = l
         self.right = r
 
-    def toString(self):
-        return "(" + self.left.toString() + ") /\\ (" + self.right.toString() + ")"
+    def __str__(self):
+        return "({}) /\\ ({})".format(self.left, self.right)
 
     def rename(self, x, z):
-        self.left.rename(x, z)
-        self.right.rename(x, z)
-        return self
+        return And(self.left.rename(x, z), self.right.rename(x, z))
 
 ######################################
 # Or <: Expr
@@ -88,7 +86,7 @@ class And(Expr):
 #    left  : Expr
 #    right : Expr
 #  methods 
-#    toString : Expr -> String
+#    __str__ : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
@@ -98,13 +96,11 @@ class Or(Expr):
         self.left = l
         self.right = r
 
-    def toString(self):
-        return "(" + self.left.toString() + ") \\/ (" + self.right.toString() + ")"
+    def __str__(self):
+        return "({}) \\/ ({})".format(self.left, self.right)
 
     def rename(self, x, z):
-        self.left.rename(x, z)
-        self.right.rename(x, z)
-        return self
+        return Or(self.left.rename(x, z), self.right.rename(x, z))
 
 ######################################
 # Arrow <: Expr
@@ -112,7 +108,7 @@ class Or(Expr):
 #    left  : Expr
 #    right : Expr
 #  methods 
-#    toString : Expr -> String
+#    __str__ : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
@@ -122,13 +118,11 @@ class Arrow(Expr):
         self.left = l
         self.right = r
 
-    def toString(self):
-        return "(" + self.left.toString() + ") -> (" + self.right.toString() + ")"
+    def __str__(self):
+        return "({}) -> ({})".format(self.left, self.right)
 
     def rename(self, x, z):
-        self.left.rename(x, z)
-        self.right.rename(x, z)
-        return self
+        return Arrow(self.left.rename(x, z), self.right.rename(x, z))
 
 ######################################
 # Forall <: Expr
@@ -136,7 +130,7 @@ class Arrow(Expr):
 #    var  : String
 #    body : Expr
 #  methods
-#    toString : Expr -> String
+#    __str__ : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
@@ -146,14 +140,14 @@ class Forall(Expr):
         self.var = v
         self.body = b
 
-    def toString(self):
-        return "A " + self.var + ". (" + self.body.toString() + ")"
+    def __str__(self):
+        return "A {}. ({})".format(self.var, self.body)
 
     def rename(self, x, z):
         if self.var == x:
-            self.var = z
-        self.body.rename(x, z)
-        return self
+            return Forall(z, self.body.rename(x, z))
+        else:
+            return Forall(self.var, self.body.rename(x, z))
 
 ######################################
 # Exists <: Expr
@@ -161,7 +155,7 @@ class Forall(Expr):
 #    var : String
 #    body : Expr
 #  methods
-#    toString : Expr -> String
+#    __str__ : Expr -> String
 #    rename   : Expr -> Expr
 ######################################
 
@@ -171,14 +165,14 @@ class Exists(Expr):
         self.var = v
         self.body = b
 
-    def toString(self):
-        return "E " + self.var + ". (" + self.body.toString() + ")"
+    def __str__(self):
+        return "E {}. ({})".format(self.var, self.body)
 
     def rename(self, x, z):
         if self.var == x:
-            self.var = z
-        self.body.rename(x, z)
-        return self
+            return Exists(z, self.body.rename(x, z))
+        else:
+            return Exists(self.var, self.body.rename(x, z))
 
 ######################################
 # Main and tests
@@ -191,12 +185,19 @@ def main():
     form4 = Forall("x", Arrow(Var("x"), And(Var("x"), Var("y"))))
     form5 = Not(And(Forall("x", Var("x")), Var("x")))
     form6 = Not(Forall("x", Var("y")))
-    print(form1.toString() + "[x |-> z] = " + form1.rename("x", "z").toString() + "\n")
-    print(form2.toString() + "[x |-> y] = " + form2.rename("x", "y").toString() + "\n")
-    print(form3.toString() + "[y |-> z] = " + form3.rename("y", "z").toString() + "\n")
-    print(form4.toString() + "[y |-> z] = " + form4.rename("y", "z").toString() + "\n")
-    print(form5.toString() + "[x |-> y] = " + form5.rename("x", "y").toString() + "\n")
-    print(form6.toString() + "[y |-> q] = " + form6.rename("y", "q").toString() + "\n")
+    forms = [(form1, ("x", "z")),
+             (form2, ("x", "y")),
+             (form3, ("y", "z")),
+             (form4, ("y", "z")),
+             (form5, ("x", "y")),
+             (form6, ("y", "q"))]
+    for t in enumerate(forms):
+        (probNum, (form, (origVar, renameVar))) = t
+        print("{}. {} [{} |-> {}] = {}".format(probNum + 1,
+                                               form,
+                                               origVar,
+                                               renameVar,
+                                               form.rename(origVar, renameVar)))
 
 if __name__ == '__main__':
     main()
