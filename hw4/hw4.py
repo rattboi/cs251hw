@@ -33,10 +33,7 @@ class Var(Expr):
         return self.name
 
     def rename(self, x, z):
-        if self.name == x:
-            return Var(z)
-        else:
-            return Var(self.name)
+        return Var(z if self.name == x else self.name)
 
 ######################################
 # Not <: Expr
@@ -144,10 +141,7 @@ class Forall(Expr):
         return "A {}. ({})".format(self.var, self.body)
 
     def rename(self, x, z):
-        if self.var == x:
-            return Forall(z, self.body.rename(x, z))
-        else:
-            return Forall(self.var, self.body.rename(x, z))
+        return Forall(z if self.var == x else self.var , self.body.rename(x, z))
 
 ######################################
 # Exists <: Expr
@@ -169,10 +163,7 @@ class Exists(Expr):
         return "E {}. ({})".format(self.var, self.body)
 
     def rename(self, x, z):
-        if self.var == x:
-            return Exists(z, self.body.rename(x, z))
-        else:
-            return Exists(self.var, self.body.rename(x, z))
+        return Exists(z if self.var == x else self.var, self.body.rename(x, z))
 
 ######################################
 # Main and tests
