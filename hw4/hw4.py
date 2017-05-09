@@ -142,7 +142,10 @@ class Forall(Expr):
         return f'∀{self.var}.({self.body})'
 
     def rename(self, x: str, z: str) -> Expr:
-        return Forall(z if self.var == x else self.var, self.body.rename(x, z))
+        if self.var != x:
+            return Forall(self.var, self.body.rename(x, z))
+        else:
+            return Forall(self.var, self.body.rename("Ω", "Ω"))
 
 
 class Exists(Expr):
@@ -164,8 +167,10 @@ class Exists(Expr):
         return f'∃{self.var}.({self.body})'
 
     def rename(self, x: str, z: str) -> Expr:
-        return Exists(z if self.var == x else self.var, self.body.rename(x, z))
-
+        if self.var != x:
+            return Exists(self.var, self.body.rename(x, z))
+        else:
+            return Exists(self.var, self.body.rename("Ω", "Ω"))
 
 def print_forms(forms: List[Tuple[Expr, Tuple[str, str]]]) -> None:
     for (probNum, (form, (origVar, renameVar))) in enumerate(forms):
