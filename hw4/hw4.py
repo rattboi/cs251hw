@@ -172,7 +172,7 @@ def print_forms(forms: List[Tuple[Expr, Tuple[str, str]]]) -> None:
         print(f'{probNum + 1}. {form} [{origVar} ↦ {renameVar}] = {form.rename(origVar, renameVar)}')
 
 
-def main():
+def main() -> None:
     """
     Main and tests
     """
