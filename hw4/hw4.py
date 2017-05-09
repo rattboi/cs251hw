@@ -1,4 +1,4 @@
-from __future__ import print_function
+#!/usr/bin/python3.6
 
 ######################################
 # Expr
@@ -50,7 +50,7 @@ class Not(Expr):
         self.body = b
 
     def __str__(self):
-        return "! ({})".format(self.body)
+        return f'! ({self.body})'
 
     def rename(self, x, z):
         return Not(self.body.rename(x, z))
@@ -72,7 +72,7 @@ class And(Expr):
         self.right = r
 
     def __str__(self):
-        return "({}) /\\ ({})".format(self.left, self.right)
+        return f'({self.left}) /\\ ({self.right})'
 
     def rename(self, x, z):
         return And(self.left.rename(x, z), self.right.rename(x, z))
@@ -94,7 +94,7 @@ class Or(Expr):
         self.right = r
 
     def __str__(self):
-        return "({}) \\/ ({})".format(self.left, self.right)
+        return f'({self.left}) \\/ ({self.right})'
 
     def rename(self, x, z):
         return Or(self.left.rename(x, z), self.right.rename(x, z))
@@ -116,7 +116,7 @@ class Arrow(Expr):
         self.right = r
 
     def __str__(self):
-        return "({}) -> ({})".format(self.left, self.right)
+        return f'({self.left}) -> ({self.right})'
 
     def rename(self, x, z):
         return Arrow(self.left.rename(x, z), self.right.rename(x, z))
@@ -138,7 +138,7 @@ class Forall(Expr):
         self.body = b
 
     def __str__(self):
-        return "A {}. ({})".format(self.var, self.body)
+        return f'A {self.var}. ({self.body})'
 
     def rename(self, x, z):
         return Forall(z if self.var == x else self.var , self.body.rename(x, z))
@@ -160,7 +160,7 @@ class Exists(Expr):
         self.body = b
 
     def __str__(self):
-        return "E {}. ({})".format(self.var, self.body)
+        return f'E {self.var}. ({self.body})'
 
     def rename(self, x, z):
         return Exists(z if self.var == x else self.var, self.body.rename(x, z))
@@ -183,11 +183,7 @@ def main():
              (form5, ("x", "y")),
              (form6, ("y", "q"))]
     for (probNum, (form, (origVar, renameVar))) in enumerate(forms):
-        print("{}. {} [{} |-> {}] = {}".format(probNum + 1,
-                                               form,
-                                               origVar,
-                                               renameVar,
-                                               form.rename(origVar, renameVar)))
+        print(f'{probNum + 1}. {form} [{origVar} |-> {renameVar}] = {form.rename(origVar, renameVar)}')
 
 if __name__ == '__main__':
     main()
